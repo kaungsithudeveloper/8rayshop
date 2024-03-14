@@ -42,6 +42,21 @@
                             @endif
                         </ul>
                     </li>
+
+                    <li class="slide">
+                        <a class="side-menu__item " data-bs-toggle="slide" href="#"><i
+                                class="side-menu__icon fe fe-user"></i><span class="side-menu__label">Employee
+                                Manage</span><i class="angle fe fe-chevron-right"></i></a>
+                        <ul class="slide-menu">
+                            <li class="side-menu-label1"><a href="#">Employee Manage</a></li>
+                            @if (Auth::user()->can('admin.list'))
+                                <li><a href="{{ route('all.employee') }}" class="slide-item"> All Employee</a></li>
+                            @endif
+                            @if (Auth::user()->can('admin.add'))
+                                <li><a href="{{ route('add.employee') }}" class="slide-item"> Create New Employee</a></li>
+                            @endif
+                        </ul>
+                    </li>
                 @endif
 
                 @if (Auth::user()->can('blog.menu'))

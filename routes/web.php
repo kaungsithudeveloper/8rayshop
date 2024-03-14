@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Backend\AdminController;
+use App\Http\Controllers\Backend\EmployeeController;
 use App\Http\Controllers\Backend\BlogController;
 use App\Http\Controllers\Backend\RoleController;
 
@@ -36,7 +37,7 @@ Route::get('/admin/login', [AdminController::class, 'AdminLogin'])->name('admin.
 
 //Backend Auth Route
 Route::middleware(['auth','role:admin'])->group(function () {
-    
+
     //Backend Admin Route
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
     Route::get('/admin/logout', [AdminController::class, 'logOut'])->name('admin.logout');
@@ -50,6 +51,12 @@ Route::middleware(['auth','role:admin'])->group(function () {
     Route::get('/edit/admin/role/{id}' , [AdminController::class, 'EditAdminRole'])->name('edit.admin.role');
     Route::post('/admin/user/update/{id}', [AdminController::class, 'AdminUserUpdate'])->name('admin.user.update');
     Route::get('/delete/admin/role/{id}' , [AdminController::class, 'DeleteAdminRole'])->name('delete.admin.role');
+
+
+    //Backend Admin Route
+    Route::get('/employee',[EmployeeController::class, 'AllEmployee'])->name('all.employee');
+    Route::get('/add/employee',[EmployeeController::class, 'AddEmployee'])->name('add.employee');
+    Route::post('/store/employee/user', [EmployeeController::class, 'StoreEmployee'])->name('store.employee');
 
     //Backend Blog Route
     Route::get('backend/blogs',[BlogController::class, 'index'])->name('blogs');
@@ -80,7 +87,7 @@ Route::middleware(['auth','role:admin'])->group(function () {
     Route::post('backend/update/roles',[RoleController::class, 'UpdateRoles'])->name('update.roles');
     Route::get('backend/delete/roles/{id}',[RoleController::class, 'DeleteRoles'])->name('delete.roles');
 
-    // add role permission 
+    // add role permission
     Route::get('backend/add/roles/permission',[RoleController::class, 'AddRolesPermission'])->name('add.roles.permission');
     Route::post('backend/role/permission/store',[RoleController::class, 'RolePermissionStore'])->name('role.permission.store');
     Route::get('backend/all/roles/permission',[RoleController::class, 'AllRolesPermission'])->name('all.roles.permission');
