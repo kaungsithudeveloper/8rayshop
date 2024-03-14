@@ -103,7 +103,7 @@
                                                             @endif
 
                                                             @if (Auth::user()->can('admin.delete'))
-                                                                <a href="{{ route('delete.admin.role', $admin->id) }}"
+                                                                <a href="{{ route('delete.employee', $admin->id) }}"
                                                                     class="btn text-danger btn-sm" id="delete"
                                                                     data-bs-toggle="tooltip"
                                                                     data-bs-original-title="Delete">

@@ -81,7 +81,7 @@ class EmployeeController extends Controller
             'alert-type' => 'success'
         );
 
-        return redirect()->route('all.admin')->with($notification);
+        return redirect()->route('all.employee')->with($notification);
 
     }// End Mehtod
 
@@ -161,5 +161,22 @@ class EmployeeController extends Controller
 
             return back()->with($notification);
         }
-    }
+    }// End Mehtod
+
+    public function DeleteEmployee($id)
+    {
+
+        $user = User::findOrFail($id);
+        if (!is_null($user)) {
+            $user->delete();
+        }
+
+         $notification = array(
+            'message' => 'Employee Deleted Successfully',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->back()->with($notification);
+
+    }// End Mehtod
 }

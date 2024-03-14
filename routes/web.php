@@ -59,6 +59,7 @@ Route::middleware(['auth','role:admin'])->group(function () {
     Route::post('/store/employee/user', [EmployeeController::class, 'StoreEmployee'])->name('store.employee');
     Route::get('/edit/employee/{id}' , [EmployeeController::class, 'EditEmployee'])->name('edit.employee');
     Route::post('/update/employee/{id}', [EmployeeController::class, 'UpdateEmployee'])->name('update.employee');
+    Route::get('/delete/employee/{id}' , [EmployeeController::class, 'DeleteEmployee'])->name('delete.employee');
 
     //Backend Blog Route
     Route::get('backend/blogs',[BlogController::class, 'index'])->name('blogs');
