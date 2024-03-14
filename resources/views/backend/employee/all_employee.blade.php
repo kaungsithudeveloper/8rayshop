@@ -95,7 +95,7 @@
                                                     <td>
                                                         <div class="g-2 text-center">
                                                             @if (Auth::user()->can('admin.edit'))
-                                                                <a href="{{ route('edit.admin.role', $admin->id) }}"
+                                                                <a href="{{ route('edit.employee', $admin->id) }}"
                                                                     class="btn text-primary btn-sm" data-bs-toggle="tooltip"
                                                                     data-bs-original-title="Edit">
                                                                     <span class="fe fe-edit fs-14"></span>

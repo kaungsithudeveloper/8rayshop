@@ -57,6 +57,8 @@ Route::middleware(['auth','role:admin'])->group(function () {
     Route::get('/employee',[EmployeeController::class, 'AllEmployee'])->name('all.employee');
     Route::get('/add/employee',[EmployeeController::class, 'AddEmployee'])->name('add.employee');
     Route::post('/store/employee/user', [EmployeeController::class, 'StoreEmployee'])->name('store.employee');
+    Route::get('/edit/employee/{id}' , [EmployeeController::class, 'EditEmployee'])->name('edit.employee');
+    Route::post('/update/employee/{id}', [EmployeeController::class, 'UpdateEmployee'])->name('update.employee');
 
     //Backend Blog Route
     Route::get('backend/blogs',[BlogController::class, 'index'])->name('blogs');

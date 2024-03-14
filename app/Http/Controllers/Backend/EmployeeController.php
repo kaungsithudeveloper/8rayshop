@@ -34,7 +34,7 @@ class EmployeeController extends Controller
 
     public function AddEmployee()
     {
-        $roles = Role::all();
+        $roles = Role::where('name', '!=', 'SuperAdmin')->get();
         return view('backend.employee.add_employee',compact('roles'));
     }// End Mehtod
 
@@ -84,4 +84,82 @@ class EmployeeController extends Controller
         return redirect()->route('all.admin')->with($notification);
 
     }// End Mehtod
+
+    public function EditEmployee($id)
+    {
+
+        $employeeData = User::findOrFail($id);
+        $roles = Role::where('name', '!=', 'SuperAdmin')->get();
+        return view('backend.employee.edit_employee',compact('employeeData','roles'));
+    }// End Mehtod
+
+    public function UpdateEmployee(Request $request, $id)
+    {
+        try {
+            // Validation rules
+            $validator = Validator::make($request->all(), [
+                'username' => ['required', 'string', 'max:255', 'unique:users,username,' . $id],
+                'name' => ['required', 'string', 'max:255'],
+                'email' => ['required', 'email', 'max:255', 'unique:users,email,' . $id],
+                'phone' => ['required', 'string', 'max:15', 'unique:users,phone,' . $id],
+                'aboutme' => ['nullable', 'string', 'max:1000'],
+                'photo' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+            ]);
+
+            if ($validator->fails()) {
+                return back()->withErrors($validator)->withInput();
+            }
+
+            $user = User::findOrFail($id);
+
+            // Update user data
+            $user->username = $request->username;
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->phone = $request->phone;
+            $user->aboutme = $request->aboutme;
+            $user->role = 'employee'; // You may update this as needed
+            $user->status = 'active'; // You may update this as needed
+
+            // Handle photo upload
+            if ($request->hasFile('photo')) {
+                $image = $request->file('photo');
+                $imageName = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
+                $imagePath = 'upload/admin_images/' . $imageName;
+
+                // Save the image and update user's photo field
+                Image::make($image)->resize(300, 400)->save(public_path($imagePath));
+                $user->photo = $imageName;
+
+                // Delete the old photo if it exists
+                if ($user->photo) {
+                    Storage::delete('upload/admin_images/' . $user->photo);
+                }
+            }
+
+            $user->save();
+
+            // Update user roles
+            $user->roles()->detach();
+            if ($request->roles) {
+                $user->assignRole($request->roles);
+            }
+
+            $notification = [
+                'message' => 'Employee Updated Successfully',
+                'alert-type' => 'success',
+            ];
+
+            return redirect()->route('all.employee')->with($notification);
+
+        } catch (\Exception $e) {
+            Log::error('Error updating user: ' . $e->getMessage());
+            $notification = [
+                'message' => 'An error occurred while updating the user.',
+                'alert-type' => 'error',
+            ];
+
+            return back()->with($notification);
+        }
+    }
 }
