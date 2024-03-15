@@ -98,8 +98,13 @@ Route::middleware(['auth','role:admin'])->group(function () {
     Route::post('backend/admin/roles/update/{id}',[RoleController::class, 'AdminRolesUpdate'])->name('admin.roles.update');
     Route::get('backend/admin/delete/roles/{id}',[RoleController::class, 'AdminRolesDelete'])->name('admin.delete.roles');
 
-});
+});//Backend Auth Admin End
 
-//Backend Auth Admin End
+
+Route::middleware(['auth','role:employee'])->group(function () {
+
+    Route::get('/employee/dashboard', [EmployeeController::class, 'EmployeeDashboard'])->name('employee.dashboard');
+
+});//Backend Auth employee End
 
 require __DIR__.'/auth.php';

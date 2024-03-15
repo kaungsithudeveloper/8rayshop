@@ -179,4 +179,9 @@ class EmployeeController extends Controller
         return redirect()->back()->with($notification);
 
     }// End Mehtod
+
+    public function EmployeeDashboard()
+    {
+        return view('backend.employee.dashboard');
+    }
 }
